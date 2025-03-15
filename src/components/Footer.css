@@ -1,0 +1,12 @@
+.erp-footer {
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 2rem;
+  margin-top: 4rem;
+}
+
+.erp-footer__content {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}

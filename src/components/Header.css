@@ -1,0 +1,50 @@
+.erp-header {
+  background: #2c3e50;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.erp-header__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.erp-header__logo {
+  color: #ecf0f1;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.erp-header__nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.erp-header__nav-item {
+  background: transparent;
+  border: none;
+  color: #ecf0f1;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.erp-header__nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .erp-header__container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
