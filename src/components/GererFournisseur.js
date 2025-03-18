@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './GererFournisseur.css';
+import axios from "axios";
 
 const GererFournisseur = () => {
   const [fournisseurs, setFournisseurs] = useState([]);
@@ -12,19 +13,39 @@ const GererFournisseur = () => {
     email:'',
     motdepasse:''
   });
-
-  const handleSubmit = (e) => {
+   useEffect (()=>{
+        axios.get(`http://localhost:8081/users`)
+        .then(response=> setFournisseurs(response.data))
+       .catch(error=>console.error("impossible de retrouver les fournisseurs: ",error))
+   },[]);
+   
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (currentFournisseur.id) {// idhe ken currentFournisseur has an id -> id is not empty tsir update
-      setFournisseurs(fournisseurs.map(f => 
-        f.id===currentFournisseur.id?currentFournisseur:f // f tekhou l valeur mtaa  currentfournisseur ki yil9ah bl id mi tableau makenchi yo93d houwa
-      ));
-    } else {
-      setFournisseurs([...fournisseurs, { // this adds a provider to the array list if current fournisseur is empty lil ajout 
-        ...currentFournisseur, 
-        id: Date.now()   // bech regenerate a unique id 
-      }]);
+      axios.put(`http://localhost:8081/user/${currentFournisseur.id}`,currentFournisseur)
+      .then(response=>{setFournisseurs(fournisseurs.map(f => 
+        f.id===currentFournisseur.id? response.data :f // f tekhou l valeur mtaa  currentfournisseur ki yil9ah bl id mi tableau makenchi yo93d houwa
+      ))
+      resetForm();
+    })
+      .catch(error=>console.error("modification impossible du fournisseur choisi: ",error))
     }
+    
+    else {
+      axios.post(`http://localhost:8081/user`,currentFournisseur)
+      .then(response=>{
+        setFournisseurs([...fournisseurs, { // this adds a provider to the array list if current fournisseur is empty lil ajout 
+          ...response.data, 
+        }]);resetForm();
+
+      }).catch(error=>console.error("Ajout de fournisseur impossible: ", error))
+      
+    }
+    
+  };
+
+  const resetForm=()=>{
     setShowModal(false);
     setCurrentFournisseur({   id: '', //bech l form yaarjaa vide
       nom: '', 
@@ -32,7 +53,11 @@ const GererFournisseur = () => {
       adresse: '' ,
       email:'',
       motdepasse:'' });
-  };
+  }
+  const handleDelete=(id)=>{
+    axios.delete((`http://localhost:8081/user/${id}`))
+    .then(()=>{setFournisseurs(fournisseurs.filter(f => f.id !== id))}).catch(error=>console.error("Supression impossible", error))
+  }
 
   return (
     <div className="gerer-fournisseur__container">
@@ -75,7 +100,7 @@ const GererFournisseur = () => {
                 </button>
                 <button
                   className="action-button--danger"
-                  onClick={() => setFournisseurs(fournisseurs.filter(f => f.id !== fournisseur.id))}// taaml array jdid
+                   onClick={() => handleDelete(fournisseur.id)}
                 >
                   🗑️ Supprimer
                 </button>

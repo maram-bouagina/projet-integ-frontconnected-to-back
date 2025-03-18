@@ -9,13 +9,36 @@ const GererAdmin = () => {
     email:'',
     motdepasse:'' });
 
+   useEffect (()=>{
+           axios.get(`http://localhost:8081/users`)
+           .then(response=> setFournisseurs(response.data))
+          .catch(error=>console.error("impossible de retrouver les admins: ",error))
+      },[]); 
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currentAdmin.id) {
-      setAdmins(admins.map(a => a.id === currentAdmin.id ? currentAdmin : a));
+      axios.put(`http://localhost:8081/user/${currentAdmin.id}`,currentAdmin)
+        .then(response=>{setAdmin(admins.map(a => 
+          a.id===currentAdmin.id? response.data :a 
+        ))
+        resetForm();
+      })
+        .catch(error=>console.error("modification impossible de l'admin choisi: ",error))
+
     } else {
-      setAdmins([...admins, { ...currentAdmin, id: Date.now() }]);
+      axios.post(`http://localhost:8081/user`,currentAdmin)
+      .then(response=>{
+        setAdmin([...admins, { 
+          ...response.data, 
+        }]);resetForm();
+
+      }).catch(error=>console.error("Ajout de l' admin impossible: ", error))
+      
     }
+  };
+  const resetForm=()=>{
     setShowModal(false);
     setCurrentAdmin({   id: '', //bech l form yaarjaa vide
       nom: '', 
@@ -23,7 +46,12 @@ const GererAdmin = () => {
       adresse: '' ,
       email:'',
       motdepasse:'' });
-  };
+  }
+  const handleDelete=(id)=>{
+    axios.delete((`http://localhost:8081/user/${id}`))
+    .then(()=>{setAdmins(admins.filter(a => a.id !== id))}).catch(error=>console.error("Supression impossible", error))
+  }
+
 
   return (
     <div className="gerer-admin__container">
@@ -63,7 +91,7 @@ const GererAdmin = () => {
                 </button>
                 <button 
                   className="action-button--danger"
-                  onClick={() => setAdmins(admins.filter(a => a.id !== admin.id))}
+                  onClick={() => handleDelete(fournisseur.id)}
                 >
                   🗑️ Supprimer
                 </button>
