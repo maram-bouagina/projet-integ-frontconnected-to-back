@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './GererAdmin.css';
-
+import axios from "axios";
 const GererAdmin = () => {
   const [admins, setAdmins] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState({ id: '', nom: '', tel: '', 
     adresse: '' ,
     email:'',
-    motdepasse:'' });
+    motdepasse:'',role:'admin' });
 
    useEffect (()=>{
-           axios.get(`http://localhost:8081/users`)
-           .then(response=> setFournisseurs(response.data))
+           axios.get(`http://localhost:8082/users`)
+           .then(response=> setAdmins((response.data).filter(a => a.role =="admin")))
           .catch(error=>console.error("impossible de retrouver les admins: ",error))
       },[]); 
 
@@ -19,8 +19,8 @@ const GererAdmin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currentAdmin.id) {
-      axios.put(`http://localhost:8081/user/${currentAdmin.id}`,currentAdmin)
-        .then(response=>{setAdmin(admins.map(a => 
+      axios.put(`http://localhost:8082/user/${currentAdmin.id}`,currentAdmin)
+        .then(response=>{setAdmins(admins.map(a => 
           a.id===currentAdmin.id? response.data :a 
         ))
         resetForm();
@@ -28,9 +28,9 @@ const GererAdmin = () => {
         .catch(error=>console.error("modification impossible de l'admin choisi: ",error))
 
     } else {
-      axios.post(`http://localhost:8081/user`,currentAdmin)
+      axios.post(`http://localhost:8082/user`,currentAdmin)
       .then(response=>{
-        setAdmin([...admins, { 
+        setAdmins([...admins, { 
           ...response.data, 
         }]);resetForm();
 
@@ -45,10 +45,11 @@ const GererAdmin = () => {
       tel: '', 
       adresse: '' ,
       email:'',
-      motdepasse:'' });
+      motdepasse:''
+});
   }
   const handleDelete=(id)=>{
-    axios.delete((`http://localhost:8081/user/${id}`))
+    axios.delete((`http://localhost:8082/user/${id}`))
     .then(()=>{setAdmins(admins.filter(a => a.id !== id))}).catch(error=>console.error("Supression impossible", error))
   }
 
@@ -91,7 +92,7 @@ const GererAdmin = () => {
                 </button>
                 <button 
                   className="action-button--danger"
-                  onClick={() => handleDelete(fournisseur.id)}
+                  onClick={() => handleDelete(admin.id)}
                 >
                   🗑️ Supprimer
                 </button>

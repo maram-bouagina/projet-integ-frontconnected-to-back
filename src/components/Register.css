@@ -1,0 +1,29 @@
+.main-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size:contain;
+    background-image:url("https://assets.grok.com/users/70c90ce1-08f2-49d1-a7b7-71e1bcd9e203/HHbmT34eIFHB5FH3-generated_image.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    height:80vh;
+    border-radius:100px;
+    overflow-x: hidden;
+    gap:2em;
+}
+.form-container-register{
+    background-color: white;
+    border-radius: 8px;
+    width:30%;
+    height:40%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap: 1.5em;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.error-message-register{
+    color: black;
+}
+

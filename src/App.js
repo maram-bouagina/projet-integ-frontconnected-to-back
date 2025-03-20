@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import GererAdmin from './components/GererAdmin';
 import GererFournisseur from './components/GererFournisseur';
 import GererCategorie from './components/GererCategorie';
+import Register from './components/Register';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/gerer-admin" element={<GererAdmin />} />
             <Route path="/fournisseurs" element={<GererFournisseur />} />
             <Route path="/categories" element={<GererCategorie />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </main>
 

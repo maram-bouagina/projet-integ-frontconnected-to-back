@@ -11,11 +11,12 @@ const GererFournisseur = () => {
     tel: '', 
     adresse: '' ,
     email:'',
-    motdepasse:''
+    motdepasse:'',
+    role:'fournisseur'
   });
    useEffect (()=>{
-        axios.get(`http://localhost:8081/users`)
-        .then(response=> setFournisseurs(response.data))
+        axios.get(`http://localhost:8082/users`)
+        .then(response=> setFournisseurs((response.data).filter(f => f.role =="fournisseur")))
        .catch(error=>console.error("impossible de retrouver les fournisseurs: ",error))
    },[]);
    
@@ -23,7 +24,7 @@ const GererFournisseur = () => {
     e.preventDefault();
 
     if (currentFournisseur.id) {// idhe ken currentFournisseur has an id -> id is not empty tsir update
-      axios.put(`http://localhost:8081/user/${currentFournisseur.id}`,currentFournisseur)
+      axios.put(`http://localhost:8082/user/${currentFournisseur.id}`,currentFournisseur)
       .then(response=>{setFournisseurs(fournisseurs.map(f => 
         f.id===currentFournisseur.id? response.data :f // f tekhou l valeur mtaa  currentfournisseur ki yil9ah bl id mi tableau makenchi yo93d houwa
       ))
@@ -33,7 +34,7 @@ const GererFournisseur = () => {
     }
     
     else {
-      axios.post(`http://localhost:8081/user`,currentFournisseur)
+      axios.post(`http://localhost:8082/user`,currentFournisseur)
       .then(response=>{
         setFournisseurs([...fournisseurs, { // this adds a provider to the array list if current fournisseur is empty lil ajout 
           ...response.data, 
@@ -55,7 +56,7 @@ const GererFournisseur = () => {
       motdepasse:'' });
   }
   const handleDelete=(id)=>{
-    axios.delete((`http://localhost:8081/user/${id}`))
+    axios.delete((`http://localhost:8082/user/${id}`))
     .then(()=>{setFournisseurs(fournisseurs.filter(f => f.id !== id))}).catch(error=>console.error("Supression impossible", error))
   }
 

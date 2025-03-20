@@ -16,6 +16,7 @@ const Header = () => {
           <button className="erp-header__nav-item" onClick={()=>navigate("/gerer-admin")}>Admins</button>
           <button className="erp-header__nav-item" onClick={()=>navigate("/fournisseurs")}>Fournisseurs</button>
           <button className="erp-header__nav-item" onClick={()=>navigate("/categories")}>Catégories</button>
+          <button className="erp-header__nav-item" onClick={()=>navigate("/register")}>S'authentifier / S'inscrire</button>
         </nav>
       </div>
     </header>
